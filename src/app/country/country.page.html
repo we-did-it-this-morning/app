@@ -1,0 +1,18 @@
+<ion-content>
+  <div class="country-image">
+    <iframe frameborder="0" *ngIf="countryUrl && severity"
+      [src]="countryUrl" allowfullscreen
+      [style.filter]="sanitizer.bypassSecurityTrustStyle('grayscale(100%) invert(1) sepia(100%) hue-rotate(' + severityStyles[severity.level].hue + 'deg) saturate(500%)')"
+    ></iframe>
+  </div>
+
+  <div class="content">
+    <h1 *ngIf="!loading">{{ country.name }}</h1>
+    <div class="severity" *ngIf="severity"
+      [style.color]="severityStyles[severity.level].color"
+    >
+      <ion-icon [name]="severityStyles[severity.level].icon"></ion-icon>
+      {{ severity.description }} malaria
+    </div>
+  </div>
+</ion-content>

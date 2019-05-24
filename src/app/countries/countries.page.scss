@@ -1,0 +1,40 @@
+h1 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+}
+.search {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 30vh;
+  width: 90%;
+}
+
+ion-label {
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.search-bar {
+  --padding-start: 0;
+  --inner-padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+}
+
+ion-input {
+  margin-top: 5px;
+  border: 2px solid var(--ion-color-primary);
+  --padding-start: 10px;
+  --inner-padding-start: 10px;
+  --padding-end: 10px;
+}
+
+.search-results {
+  background: #fff;
+  border: 2px solid var(--ion-color-primary);
+}

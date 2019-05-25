@@ -2,17 +2,45 @@
   <div class="country-image">
     <iframe frameborder="0" *ngIf="countryUrl && severity"
       [src]="countryUrl" allowfullscreen
-      [style.filter]="sanitizer.bypassSecurityTrustStyle('grayscale(100%) invert(1) sepia(100%) hue-rotate(' + severityStyles[severity.level].hue + 'deg) saturate(500%)')"
+      [style.filter]="sanitizer.bypassSecurityTrustStyle('blur(0.1px) grayscale(100%) invert(1) sepia(100%) hue-rotate(' + severityStyles[severity.level].hue + 'deg) saturate(500%)')"
     ></iframe>
   </div>
 
   <div class="content">
     <h1 *ngIf="!loading">{{ country.name }}</h1>
+    
     <div class="severity" *ngIf="severity"
       [style.color]="severityStyles[severity.level].color"
     >
       <ion-icon [name]="severityStyles[severity.level].icon"></ion-icon>
       {{ severity.description }} malaria
     </div>
+
+    <!-- <div class="malaria-types" *ngIf="malariaTypes">
+      <div class="malaria-type" *ngFor="let malariaType of malariaTypes"
+      [style.border-left-color]="severityStyles[severity.level].color"
+      >
+        <h2>{{ malariaType.name }}</h2>
+        <p>{{ malariaType.description }}</p>
+        <h3>Treatments</h3>
+        <div *ngFor="let treatmentId of malariaType.treatments">
+          <h4>{{ treatments[treatmentId].name }}</h4>
+          <p>{{ treatments[treatmentId].description }}</p>
+        </div>
+      </div>
+    </div> -->
+
+    <accordion [showArrows]="true" [closeOthers]="true" [expandAll]="false" *ngIf="malariaTypes">
+      <accordion-group *ngFor="let malariaType of malariaTypes">
+        <accordion-heading>{{ malariaType.name }}</accordion-heading>
+        <p>{{ malariaType.description }}</p>
+        <accordion [showArrows]="true" [closeOthers]="true" expandAll="false">
+          <accordion-group *ngFor="let treatmentId of malariaType.treatments">
+            <accordion-heading>{{ treatments[treatmentId].name }}</accordion-heading>
+            <p>{{ treatments[treatmentId].description }}</p>
+          </accordion-group>
+        </accordion>
+      </accordion-group>
+    </accordion>
   </div>
 </ion-content>

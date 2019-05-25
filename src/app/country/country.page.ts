@@ -14,6 +14,8 @@ export class CountryPage implements OnInit {
   public countryUrl = null;
   public country;
   public severity;
+  public malariaTypes;
+  public treatments: any = {};
 
   public severityStyles = {
     1: {
@@ -73,6 +75,19 @@ export class CountryPage implements OnInit {
       level: maxSeverity,
     });
     this.severity = severityDetails;
+
+    for (const malariaType of malariaTypes) {
+      for (const treatmentId of malariaType.treatments) {
+        if (typeof this.treatments[treatmentId] !== 'undefined') {
+          continue;
+        }
+        this.treatments[treatmentId] = await this.api.get('treatment', {
+          id: treatmentId,
+        });
+      }
+    }
+
+    this.malariaTypes = malariaTypes;
   }
 
   async drawCountry() {

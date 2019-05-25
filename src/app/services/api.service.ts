@@ -27,4 +27,12 @@ export class ApiService {
     }
     return res.data;
   }
+
+  public async getMappedList(url, property = 'id'): Promise<any> {
+    const res = await this.get(url, {});
+    return res.reduce((ob, treatmentType) => {
+      ob[treatmentType[property]] = treatmentType;
+      return ob;
+    }, {});
+  }
 }

@@ -20,6 +20,7 @@
   min-height: 100vh;
   background: linear-gradient(rgba(#000, 0.15) 100px, #000 300px, #000 100%);
   color: #fff;
+  padding: 10px;
 }
 
 h1 {
@@ -34,15 +35,26 @@ h1 {
 h2 {
   text-transform: uppercase;
   font-weight: 900;
-}
-h3 {
   font-size: 20px;
+}
+.malaria-type-heading {
+  display: block;
+  font-size: 24px;
   font-weight: 900;
   text-transform: uppercase;
+  margin-top: 30px;
+  padding-top: 10px;
 }
-h4 {
-  font-weight: 900;
+.treatment-heading {
+  font-weight: 700;
   font-size: 16px;
+}
+.treatment-subheading {
+  font-size: 12px;
+  font-weight: lighter;
+}
+.treatment-icon {
+  font-size: 24px;
 }
 .severity {
   padding-top: 140px;
@@ -52,10 +64,18 @@ h4 {
   font-size: 20px;
 }
 
-.malaria-types {
-  padding: 10px;
-  .malaria-type {
-    border-left: 4px solid pink;
-    padding-left: 10px;
-  }
+::ng-deep .panel {
+  padding-left: 10px;
+}
+
+.malaria-type ::ng-deep > .panel {
+  border-left: 4px solid #fff;
+  padding-left: 10px;
+}
+
+.back-button {
+  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }

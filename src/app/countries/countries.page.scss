@@ -19,11 +19,14 @@ ion-label {
   font-weight: 900;
 }
 
-.search-bar {
+::ng-deep .search-bar {
   --padding-start: 0;
   --inner-padding-start: 0;
   --padding-end: 0;
   --inner-padding-end: 0;
+}
+::ng-deep .search-bar input {
+  padding-left: 10px !important;
 }
 
 ion-input {
@@ -37,4 +40,10 @@ ion-input {
 .search-results {
   background: #fff;
   border: 2px solid var(--ion-color-primary);
+}
+
+ion-content,
+ion-item {
+  --background: var(--bgColor);
+  --color: #fff;
 }

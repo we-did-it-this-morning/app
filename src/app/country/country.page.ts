@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { MapService } from '../services/map.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-country',
@@ -15,7 +15,7 @@ export class CountryPage implements OnInit {
   public country;
   public severity;
   public malariaTypes;
-  public treatments: any = {};
+  public preventions;
 
   public severityStyles = {
     1: {
@@ -25,8 +25,8 @@ export class CountryPage implements OnInit {
     },
     2: {
       icon: 'alert',
-      color: 'yellow',
-      hue: 130,
+      color: 'orange',
+      hue: 330,
     },
     3: {
       icon: 'medkit',
@@ -40,6 +40,7 @@ export class CountryPage implements OnInit {
     private map: MapService,
     private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -76,18 +77,40 @@ export class CountryPage implements OnInit {
     });
     this.severity = severityDetails;
 
-    for (const malariaType of malariaTypes) {
-      for (const treatmentId of malariaType.treatments) {
-        if (typeof this.treatments[treatmentId] !== 'undefined') {
-          continue;
-        }
-        this.treatments[treatmentId] = await this.api.get('treatment', {
-          id: treatmentId,
-        });
-      }
-    }
+    const treatments = await this.api.getMappedList('treatments');
+    const treatmentTypes = await this.api.getMappedList('treatment-types');
+    const symptoms = await this.api.getMappedList('symptoms');
+    const symptomTypes = await this.api.getMappedList('symptom-types');
+    const preventions = await this.api.get('preventions', {});
 
-    this.malariaTypes = malariaTypes;
+    this.malariaTypes = malariaTypes
+      .map(malariaType => {
+        malariaType.treatments = malariaType.treatments.map(treatment => {
+          const treatmentInfo = treatments[treatment];
+          treatmentInfo.treatmentType = treatmentTypes[treatmentInfo.treatmentType];
+          return treatmentInfo;
+        });
+
+        malariaType.symptoms = malariaType.symptoms.map(symptom => {
+          const symptomInfo = symptoms[symptom];
+          symptomInfo.symptomType = symptomTypes[symptomInfo.symptomType];
+          return symptomInfo;
+        });
+
+        return malariaType;
+      })
+      .sort((a, b) => a.severity - b.severity);
+
+    const allSeverities = this.malariaTypes
+      .map(m => m.severity)
+      .filter((sid, sIdx, arr) => arr.indexOf(sid) === sIdx);
+
+    this.preventions = preventions
+      .filter(prevention => prevention.severities
+        .some(severityId => allSeverities.indexOf(severityId) >= 0)
+      );
+
+    console.log(this.malariaTypes);
   }
 
   async drawCountry() {
@@ -101,4 +124,7 @@ export class CountryPage implements OnInit {
     `);
   }
 
+  goBack() {
+    this.router.navigate(['countries']);
+  }
 }

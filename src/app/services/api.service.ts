@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ApiService {
-  // private readonly API_URL = 'https://infmalariapp.herokuapp.com';
-  private readonly API_URL = 'http://localhost:3000';
+  private readonly API_URL = 'https://infmalariapp.herokuapp.com';
+  // private readonly API_URL = 'http://localhost:3000';
 
   constructor(
     private http: HttpClient

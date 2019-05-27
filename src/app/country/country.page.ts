@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./country.page.scss'],
 })
 export class CountryPage implements OnInit {
-  private loading = true;
+  public loading = true;
   public countryUrl = null;
   public country;
   public severity;

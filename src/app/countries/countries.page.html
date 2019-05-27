@@ -1,21 +1,23 @@
-<ion-content class="content">
-  <div class="search">
-    <h1>Where to?</h1>
-    <ion-item class="search-bar" no-padding>
-      <ion-label position="stacked">Search Country</ion-label>
-      <ion-input type="text"
-        [(ngModel)]="countrySearchTerm"
-        (ionChange)="onSearchChange($event)"
-      ></ion-input>
-    </ion-item>
-
-    <div class="search-results">
-      <ion-item *ngFor="let searchResult of searchResults"
-        (click)="selectCountry(searchResult)"
-      >
-        <ion-ripple-effect></ion-ripple-effect>
-        {{ searchResult.name }}
+<ion-content>
+  <div class="content">
+    <div class="search">
+      <h1>Where to?</h1>
+      <ion-item class="search-bar" no-padding>
+        <ion-label position="stacked">Search Country</ion-label>
+        <ion-input type="text"
+          [(ngModel)]="countrySearchTerm"
+          (ionChange)="onSearchChange($event)"
+        ></ion-input>
       </ion-item>
+
+      <div class="search-results" *ngIf="searchResults.length">
+        <ion-item *ngFor="let searchResult of searchResults"
+          (click)="selectCountry(searchResult)"
+        >
+          <ion-ripple-effect></ion-ripple-effect>
+          {{ searchResult.name }}
+        </ion-item>
+      </div>
     </div>
   </div>
 </ion-content>

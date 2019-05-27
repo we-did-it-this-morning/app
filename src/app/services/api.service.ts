@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ApiService {
-  // private readonly API_URL = 'https://infmalariapp.herokuapp.com';
-  private readonly API_URL = 'http://localhost:3000';
+  private readonly API_URL = 'https://infmalariapp.herokuapp.com';
+  // private readonly API_URL = 'http://localhost:3000';
 
   constructor(
     private http: HttpClient
@@ -21,10 +21,25 @@ export class ApiService {
     const parametersString = Object.keys(parameters)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(parameters[key])}`, {})
       .join('&');
-    const res: any = await this.http.get(`${this.API_URL}/${url}?${parametersString}`).toPromise();
+
+    let res: any;
+    try {
+      res = await this.http.get(`${this.API_URL}/${url}?${parametersString}`).toPromise();
+    } catch (err) {
+      console.error('api error', err);
+      throw err;
+    }
     if (!res.success) {
-      throw new Error(res.message);
+      throw res;
     }
     return res.data;
+  }
+
+  public async getMappedList(url, property = 'id'): Promise<any> {
+    const res = await this.get(url, {});
+    return res.reduce((ob, treatmentType) => {
+      ob[treatmentType[property]] = treatmentType;
+      return ob;
+    }, {});
   }
 }

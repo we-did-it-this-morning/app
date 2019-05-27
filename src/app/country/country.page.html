@@ -2,17 +2,69 @@
   <div class="country-image">
     <iframe frameborder="0" *ngIf="countryUrl && severity"
       [src]="countryUrl" allowfullscreen
-      [style.filter]="sanitizer.bypassSecurityTrustStyle('grayscale(100%) invert(1) sepia(100%) hue-rotate(' + severityStyles[severity.level].hue + 'deg) saturate(500%)')"
+      [style.filter]="sanitizer.bypassSecurityTrustStyle('blur(0.1px) grayscale(100%) invert(1) sepia(100%) hue-rotate(' + severityStyles[severity.level].hue + 'deg) saturate(500%)')"
     ></iframe>
   </div>
 
   <div class="content">
+    <ion-icon name="arrow-back" class="back-button" (click)="goBack()"></ion-icon>
     <h1 *ngIf="!loading">{{ country.name }}</h1>
+    
     <div class="severity" *ngIf="severity"
       [style.color]="severityStyles[severity.level].color"
     >
       <ion-icon [name]="severityStyles[severity.level].icon"></ion-icon>
       {{ severity.description }} malaria
     </div>
+
+    <div class="preventions">
+      <h2>Preventions</h2>
+      <p *ngIf="preventions && !preventions.length">No preventions are necessary</p>
+      <div class="prevention" *ngFor="let prevention of preventions">
+        <h3>{{ prevention.name }}</h3>
+        <p>{{ prevention.description }}</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 30px;">Types of Malaria</h2>
+    <p *ngIf="malariaTypes && !malariaTypes.length">This country does not have malaria</p>
+    <accordion class="malaria-types" [showArrows]="true" [closeOthers]="true" [expandAll]="true" *ngIf="malariaTypes">
+      <accordion-group class="malaria-type" *ngFor="let malariaType of malariaTypes">
+        <accordion-heading class="malaria-type-heading">{{ malariaType.name }}</accordion-heading>
+        <p>{{ malariaType.description }}</p>
+      
+        <accordion [expandAll]="false" [closeOthers]="true">
+
+          <accordion-group>
+            <accordion-heading><h2>Symptoms</h2></accordion-heading>
+            <accordion class="treatments" [showArrows]="true" [closeOthers]="true" [expandAll]="false">
+              <accordion-group class="treatment" *ngFor="let symptom of malariaType.symptoms">
+                <accordion-heading class="treatment-heading">
+                  <ion-icon name="thermometer" class="treatment-icon"></ion-icon>
+                  {{ symptom.name }}
+                  <div class="treatment-subheading">{{ symptom.symptomType.name }}</div>
+                </accordion-heading>
+                <p>{{ symptom.description }}</p>
+              </accordion-group>
+            </accordion>
+          </accordion-group>
+          
+          <accordion-group>
+            <accordion-heading><h2>Treatments</h2></accordion-heading>
+            <accordion class="treatments" [showArrows]="true" [closeOthers]="true" [expandAll]="false">
+              <accordion-group class="treatment" *ngFor="let treatment of malariaType.treatments">
+                <accordion-heading class="treatment-heading">
+                  <ion-icon name="medkit" class="treatment-icon"></ion-icon>
+                  {{ treatment.name }}
+                  <div class="treatment-subheading">{{ treatment.treatmentType.name }}</div>
+                </accordion-heading>
+                <p>{{ treatment.description }}</p>
+              </accordion-group>
+            </accordion>
+          </accordion-group>
+
+        </accordion>
+      </accordion-group>
+    </accordion>
   </div>
 </ion-content>

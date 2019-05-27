@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./countries.page.scss'],
 })
 export class CountriesPage implements OnInit {
-  private countrySearchTerm = '';
+  public countrySearchTerm = '';
   private countries = [];
   public searchResults = [];
 
